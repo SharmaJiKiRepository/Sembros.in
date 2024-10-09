@@ -1,0 +1,47 @@
+.customShadow{
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+
+/***user table***/
+.userTable{
+    @apply bg-white
+}
+.userTable th{
+    @apply border text-base font-medium
+}
+
+.userTable td{
+    @apply border text-base text-center
+}
+
+/**scrollbar hidden****/
+.scrollbar-none::-webkit-scrollbar{
+    display: none;
+}
+.admin-sidebar {
+    background-color: #f5f5f5;
+    border-right: 1px solid #e5e5e5;
+    padding: 1rem;
+  }
+  
+  .admin-sidebar img {
+    border-radius: 50%;
+  }
+  
+  .admin-sidebar p {
+    color: #333;
+  }
+  
+  nav a {
+    padding: 0.5rem 1rem;
+    margin: 0.5rem 0;
+    display: block;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+  
+  nav a:hover {
+    background-color: #e5e5e59f;
+  }
+  

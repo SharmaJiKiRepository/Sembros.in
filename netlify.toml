@@ -1,3 +1,6 @@
 [build]
   publish = "frontend/build"
   command = "npm run build"
+
+[functions]
+  directory = "frontend/functions"

@@ -19,7 +19,6 @@ const AdminPanel = () => {
     }, [user, navigate]);
 
     const handleProfilePicClick = () => {
-        // Trigger file input on click
         document.getElementById("profilePicInput").click();
     };
 
@@ -74,7 +73,6 @@ const AdminPanel = () => {
                     <p className='text-sm'>{user?.role}</p>
                 </div>
 
-                {/* Navigation */}
                 <div>
                     <nav className='grid p-4'>
                         <Link to={"all-users"} className='px-2 py-1 hover:bg-slate-100'>All Users</Link>

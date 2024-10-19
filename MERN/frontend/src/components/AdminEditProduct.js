@@ -52,8 +52,6 @@ const AdminEditProduct = ({ onClose, productData }) => {
   const fetchProducts = async () => {
     const token = localStorage.getItem('token'); 
     if (!token) {
-      // Remove this error toast so no message appears
-      // toast.error("You're not authorized. Please login.");
       return;
     }
     
@@ -223,7 +221,6 @@ const AdminEditProduct = ({ onClose, productData }) => {
           <button className='px-3 py-2 bg-red-600 text-white mb-10 hover:bg-red-700'>Update Product</button>
         </form>
 
-        {/***display image full screen */}
         {openFullScreenImage && (
           <DisplayImage onClose={() => setOpenFullScreenImage(false)} imgUrl={fullScreenImage} />
         )}

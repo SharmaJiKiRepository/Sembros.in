@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import SummaryApi from "../common/SummaryApi";
 import { useSelector } from "react-redux";
 
-// Helper function to capitalize the first letter of each word
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
 const UserProfile = () => {

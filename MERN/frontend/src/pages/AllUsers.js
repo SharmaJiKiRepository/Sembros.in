@@ -91,7 +91,8 @@ const AllUsers = () => {
                             <td>{index + 1}</td>
                             <td>{el?.name}</td>
                             <td>{el?.email}</td>
-                            <td>{el?.phoneNumber || 'N/A'}</td>
+                            <td>{el?.phone || 'N/A'}</td>
+
                             <td>{el?.role}</td>
                             <td>{el?.role === 'seller' ? el?.companyName || 'N/A' : 'N/A'}</td>
                             <td>{el?.role === 'seller' ? el?.gstNumber || 'N/A' : 'N/A'}</td>

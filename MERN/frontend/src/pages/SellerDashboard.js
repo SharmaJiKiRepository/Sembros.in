@@ -11,7 +11,6 @@ const SellerDashboard = () => {
 
     const fetchProducts = useCallback(async () => {
         try {
-            // Fetch only the logged-in seller's products
             const data = await fetchWithCredentials(`${SummaryApi.getSellerProducts.url}`, 'GET');
             if (data.success) {
                 setProducts(data.products || []);  // Ensure products is at least an empty array
@@ -29,7 +28,6 @@ const SellerDashboard = () => {
 
     const handleDeleteProduct = async (productId) => {
         try {
-            // Use the updated seller-specific delete route
             const data = await fetchWithCredentials(`${SummaryApi.deleteProduct.url}/${productId}`, 'DELETE');
             if (data.success) {
                 toast.success('Product deleted successfully');
@@ -42,7 +40,6 @@ const SellerDashboard = () => {
         }
     };
 
-    // Open/Close upload modal
     const toggleUploadModal = () => {
         setShowUploadModal(!showUploadModal);
     };
@@ -70,7 +67,6 @@ const SellerDashboard = () => {
                 )}
             </div>
 
-            {/* Upload Product Modal */}
             {showUploadModal && (
                 <UploadProduct onClose={toggleUploadModal} fetchData={fetchProducts} />
             )}

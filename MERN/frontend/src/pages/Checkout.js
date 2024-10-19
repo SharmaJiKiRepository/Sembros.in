@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import SummaryApi from '../common/SummaryApi';
 import { toast } from 'react-toastify';
-import displayINRCurrency from '../helpers/displayCurrency';
 
 const Checkout = () => {
   const user = useSelector((state) => state?.user?.user);
-  const [shippingAddress, setShippingAddress] = useState(user?.address || ''); // Autofill with profile address
+  const [shippingAddress, setShippingAddress] = useState(user?.address || '');
   const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
@@ -18,12 +17,13 @@ const Checkout = () => {
 
       const data = await response.json();
       if (data.success) {
-        // Ensure that each item has an image URL before setting state
-        const updatedCartItems = data.data.map((item) => ({
-          ...item,
-          imageUrl: item.productId?.productImage?.[0] || '', // Assuming the first image in productImage array
-        }));
-        setCartItems(updatedCartItems);
+        setCartItems(data.data.map((item) => ({
+          productId: item.productId?._id,
+          productName: item.productId?.productName || 'Product Name Unavailable',
+          sellingPrice: item.productId?.sellingPrice || 'Price Unavailable',
+          quantity: item.quantity,
+          imageUrl: item.productId?.productImage?.[0] || '/default-product-image.jpg',
+        })));
       } else {
         toast.error(data.message);
       }
@@ -33,23 +33,40 @@ const Checkout = () => {
   }, []);
 
   const handlePlaceOrder = async () => {
-    // Log cart items to ensure image URLs are present
-    console.log("Cart items before placing order:", cartItems);
+    if (!shippingAddress) {
+      toast.error("Shipping address is required");
+      return;
+    }
 
-    const response = await fetch(SummaryApi.checkout.url, {  
-      method: 'POST',  
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ shippingAddress, cartItems }),
-    });
+    if (cartItems.length === 0) {
+      toast.error("Cart is empty");
+      return;
+    }
 
-    const data = await response.json();
-    if (data.success) {
-      toast.success('Order placed successfully');
-    } else {
-      toast.error(data.message);
+    const updatedCartItems = cartItems.map(item => ({
+      productId: item.productId,
+      quantity: item.quantity,
+      imageUrl: item.imageUrl || '/default-product-image.jpg',  // Ensure that imageUrl is included
+    }));
+
+    try {
+      const response = await fetch(SummaryApi.checkout.url, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ shippingAddress, cartItems: updatedCartItems }),  // Correct key: cartItems
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        toast.success('Order placed successfully');
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error('Error placing order: ' + error.message);
     }
   };
 
@@ -70,16 +87,14 @@ const Checkout = () => {
 
       <div className="mb-6 bg-black p-6 rounded-lg shadow-lg">
         <h2 className="text-2xl mb-4 text-white">Order Summary</h2>
-        {cartItems.map((item) => (
-          <div key={item._id} className="flex items-center mb-2 text-white">
+        {cartItems.map((item, index) => (
+          <div key={index} className="flex items-center mb-2 text-white">
             <img
               src={item.imageUrl}
-              alt={`${item.productId?.productName}`}
+              alt={`${item.productName}`}
               className="w-16 h-16 mr-4 object-cover"
             />
-            <p>
-              {item.productId?.productName} - {displayINRCurrency(item.productId?.sellingPrice)} x {item.quantity}
-            </p>
+            <p>{`${item.productName} - ${item.sellingPrice} x ${item.quantity}`}</p>
           </div>
         ))}
       </div>

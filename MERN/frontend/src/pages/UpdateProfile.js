@@ -10,8 +10,7 @@ const UpdateProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [name, setName] = useState(user?.name);
-  // eslint-disable-next-line no-unused-vars
-  const [email, setEmail] = useState(user?.email);
+  const [email] = useState(user?.email);
   const [role, setRole] = useState(user?.role);
   const [address, setAddress] = useState(user?.address || '');
   const [profilePic, setProfilePic] = useState(null);
@@ -49,12 +48,18 @@ const UpdateProfile = () => {
       if (data.success) {
         dispatch(setUserDetails(data.user));
         toast.success('Profile Updated Successfully');
-        navigate('/users/profile');
+        
+        // Redirect based on user role
+        if (data.user.role === 'seller') {
+          navigate('/seller-dashboard');  // Redirect seller to the seller dashboard
+        } else {
+          navigate('/users/profile');     // Redirect general user to profile page
+        }
       } else {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error('Failed to update profile');
+      toast.error('Failed to update profile: ' + error.message);
     }
   };
 

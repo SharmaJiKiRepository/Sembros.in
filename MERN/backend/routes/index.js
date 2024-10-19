@@ -22,9 +22,9 @@ const updateAddToCartProduct = require('../controller/user/updateAddToCartProduc
 const deleteAddToCartProduct = require('../controller/user/deleteAddToCartProduct');
 const searchProduct = require('../controller/product/searchProduct');
 const filterProductController = require('../controller/product/filterProduct');
-const { getUserOrders, placeOrder, cancelOrder, deleteOrder } = require('../controller/order/orderController'); // Updated
-const transactionHistoryController = require('../controller/order/transactionsHistoryController');
+const { getUserOrders, placeOrder, cancelOrder, deleteOrder } = require('../controller/order/orderController');
 const updateUserProfile = require('../controller/user/updateUserProfile');
+const getSellerProducts = require('../controller/product/getSellerProducts');
 
 // User routes
 router.post("/signup", userSignUpController);
@@ -33,7 +33,6 @@ router.get("/user-details", authToken, userDetailsController);
 router.get("/userLogout", userLogout);
 router.put('/users/profile', authToken, updateUserProfile);
 router.get('/users/orders', authToken, getUserOrders);
-router.get('/users/transactions', authToken, transactionHistoryController); // Corrected route
 
 // Admin panel
 router.get("/all-user", authToken, allUsers);
@@ -66,6 +65,12 @@ router.post("/delete-cart-product", authToken, deleteAddToCartProduct);
 // Checkout and Order routes
 router.post('/checkout', authToken, placeOrder);
 router.put('/orders/cancel/:orderId', authToken, cancelOrder);
-router.delete('/orders/delete/:orderId', authToken, deleteOrder); // New route for deleting order history
+router.delete('/orders/delete/:orderId', authToken, deleteOrder);
+
+// Seller-specific routes
+router.post("/seller/upload-product", authToken, UploadProductController);
+router.put("/seller/update-product/:id", authToken, updateProductController);
+router.delete("/seller/delete-product/:id", authToken, deleteProductController); 
+router.get("/get-seller-products", authToken, getSellerProducts);
 
 module.exports = router;

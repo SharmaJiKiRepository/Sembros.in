@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-
 const productSchema = mongoose.Schema({
     productName : String,
     brandName : String,
@@ -7,12 +6,14 @@ const productSchema = mongoose.Schema({
     productImage : [],
     description : String,
     price : Number,
-    sellingPrice : Number
+    sellingPrice : Number,
+    seller: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }
 },{
     timestamps : true
-})
+});
 
-
-const productModel = mongoose.model("product",productSchema)
-
-module.exports = productModel
+const productModel = mongoose.model("product", productSchema);
+module.exports = productModel;

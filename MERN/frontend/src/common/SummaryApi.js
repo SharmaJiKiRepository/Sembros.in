@@ -34,6 +34,10 @@ const SummaryApi = {
     url: `${backendDomin}/api/get-product`,
     method: "get",
   },
+  getSellerProducts: {
+    url: `${backendDomin}/api/get-seller-products`, // Added endpoint for seller-specific products
+    method: "get",
+  },
   updateProduct: {
     url: `${backendDomin}/api/update-product`,
     method: "post",
@@ -83,7 +87,7 @@ const SummaryApi = {
     method: "get",
   },
   transactionHistory: {
-    url: `${backendDomin}/api/users/transactions`, // Updated to match the Router endpoint
+    url: `${backendDomin}/api/users/transactions`,
     method: "get",
   },
   returnOrder: {
@@ -99,7 +103,7 @@ const SummaryApi = {
     method: "put",
   },
   deleteProduct: {
-    url: `${backendDomin}/api/admin/delete-product`,
+    url: `${backendDomin}/api/seller/delete-product`,  // Correct endpoint for deleting products by seller
     method: "delete",
   },
   blockUnblockUser: {
@@ -114,7 +118,6 @@ const SummaryApi = {
     url: `${backendDomin}/api/orders/delete`,
     method: "DELETE",
   },
-  
 };
 
 export default SummaryApi;

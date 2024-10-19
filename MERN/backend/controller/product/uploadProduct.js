@@ -1,31 +1,49 @@
-const uploadProductPermission = require("../../helpers/permission")
-const productModel = require("../../models/productModel")
+// uploadProductController.js
 
-async function UploadProductController(req,res){
-    try{
-        const sessionUserId = req.userId
+const productModel = require("../../models/productModel");
 
-        if(!uploadProductPermission(sessionUserId)){
-            throw new Error("Permission denied")
+async function UploadProductController(req, res) {
+    try {
+        const sessionUserId = req.userId;
+        const userRole = req.userRole;
+
+        // Ensure user has permission to upload products
+        if (userRole !== 'seller') {
+            return res.status(403).json({
+                message: "Permission denied",
+                error: true,
+                success: false
+            });
         }
-    
-        const uploadProduct = new productModel(req.body)
-        const saveProduct = await uploadProduct.save()
+
+        const productData = {
+            productName: req.body.productName,
+            brandName: req.body.brandName,
+            category: req.body.category,
+            productImage: req.body.productImage,
+            description: req.body.description,
+            price: req.body.price,
+            sellingPrice: req.body.sellingPrice,
+            seller: sessionUserId, // Set the seller field
+        };
+
+        const uploadProduct = new productModel(productData);
+        const saveProduct = await uploadProduct.save();
 
         res.status(201).json({
-            message : "Product upload successfully",
-            error : false,
-            success : true,
-            data : saveProduct
-        })
+            message: "Product uploaded successfully",
+            error: false,
+            success: true,
+            data: saveProduct
+        });
 
-    }catch(err){
-        res.status(400).json({
-            message : err.message || err,
-            error : true,
-            success : false
-        })
+    } catch (err) {
+        res.status(500).json({
+            message: err.message || "Internal Server Error",
+            error: true,
+            success: false
+        });
     }
 }
 
-module.exports = UploadProductController
+module.exports = UploadProductController;

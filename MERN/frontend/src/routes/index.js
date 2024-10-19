@@ -12,8 +12,9 @@ import ProductDetails from '../pages/ProductDetails';
 import Cart from '../pages/Cart';
 import SearchProduct from '../pages/SearchProduct';
 import UserProfile from '../pages/UserProfile';
-import UpdateProfile from '../pages/UpdateProfile'; // Assuming you have an UpdateProfile component
-import Checkout from '../pages/Checkout'; // Import the Checkout page
+import UpdateProfile from '../pages/UpdateProfile';
+import Checkout from '../pages/Checkout';
+import SellerDashboard from '../pages/SellerDashboard';  // Import the SellerDashboard
 
 const router = createBrowserRouter([
   {
@@ -29,8 +30,9 @@ const router = createBrowserRouter([
       { path: 'cart', element: <Cart /> },
       { path: 'search', element: <SearchProduct /> },
       { path: 'users/profile', element: <UserProfile /> },
-      { path: 'update-profile', element: <UpdateProfile /> }, // Add this route for updating the profile
-      { path: 'checkout', element: <Checkout /> }, // Add this route for Checkout page
+      { path: 'update-profile', element: <UpdateProfile /> },
+      { path: 'checkout', element: <Checkout /> },
+      { path: 'seller-dashboard', element: <SellerDashboard />, /* Secure this route as needed */ },
       {
         path: 'admin-panel',
         element: <AdminPanel />,

@@ -3,20 +3,25 @@ import { useNavigate } from "react-router-dom";
 import SummaryApi from "../common/SummaryApi";
 import { useSelector } from "react-redux";
 
+// Helper function to capitalize the first letter of each word
+const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
 const UserProfile = () => {
   const user = useSelector((state) => state?.user?.user);
   const [orders, setOrders] = useState([]);
-  const [transactions, setTransactions] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (user?.role.toUpperCase() === 'ADMIN') {
+      navigate('/admin-panel/all-users');
+    }
+
     const fetchOrders = async () => {
       try {
         const response = await fetch(SummaryApi.userOrders.url, {
           method: SummaryApi.userOrders.method,
           credentials: "include",
         });
-
         const data = await response.json();
         if (data.success) {
           setOrders(data.orders);
@@ -26,25 +31,8 @@ const UserProfile = () => {
       }
     };
 
-    const fetchTransactions = async () => {
-      try {
-        const response = await fetch(SummaryApi.transactionHistory.url, {
-          method: SummaryApi.transactionHistory.method,
-          credentials: "include",
-        });
-
-        const data = await response.json();
-        if (data.success) {
-          setTransactions(data.data);
-        }
-      } catch (error) {
-        console.error("Failed to fetch transactions");
-      }
-    };
-
     fetchOrders();
-    fetchTransactions();
-  }, []);
+  }, [navigate, user?.role]);
 
   const handleCancelOrder = async (orderId) => {
     const confirmCancel = window.confirm("Are you sure you want to cancel this order?");
@@ -55,7 +43,6 @@ const UserProfile = () => {
         method: SummaryApi.cancelOrder.method,
         credentials: "include",
       });
-
       const data = await response.json();
       if (data.success) {
         setOrders(orders.map(order => order._id === orderId ? { ...order, status: "Cancelled" } : order));
@@ -74,7 +61,6 @@ const UserProfile = () => {
         method: "DELETE",
         credentials: "include",
       });
-
       const data = await response.json();
       if (data.success) {
         setOrders(orders.filter(order => order._id !== orderId));
@@ -88,50 +74,65 @@ const UserProfile = () => {
     navigate("/update-profile");
   };
 
+  const handleGoToSellerDashboard = () => {
+    navigate("/seller-dashboard");
+  };
+
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl mb-4 text-center" style={{ color: "#fff" }}>
-        User Profile
-      </h1>
-      <div className="mb-6 bg-black p-6 rounded-lg shadow-lg">
-        <h2 className="text-2xl mb-4 text-white text-center">Profile Details</h2>
-        <table className="min-w-full bg-gray-800 text-white shadow-md rounded-lg mb-6">
-          <tbody>
-            <tr>
-              <td className="border px-4 py-2 bg-gray-900">Name</td>
-              <td className="border px-4 py-2">{user?.name}</td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2 bg-gray-900">Email</td>
-              <td className="border px-4 py-2">{user?.email}</td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2 bg-gray-900">Role</td>
-              <td className="border px-4 py-2">{user?.role}</td>
-            </tr>
-            <tr>
-              <td className="border px-4 py-2 bg-gray-900">Address</td>
-              <td className="border px-4 py-2">{user?.address || "No address added"}</td>
-            </tr>
-          </tbody>
-        </table>
-        <div className="text-center">
+      <h1 className="text-3xl mb-4 text-center text-red-700">User Profile</h1>
+      <div className="bg-white p-6 rounded-lg shadow-lg">
+        <h2 className="text-2xl text-gray-900 mb-4">Profile Details</h2>
+        <div className="grid grid-cols-2 gap-4 text-lg">
+          <div className="font-bold">Name:</div>
+          <div>{capitalize(user?.name || '')}</div>
+
+          <div className="font-bold">Email:</div>
+          <div>{user?.email}</div>
+
+          <div className="font-bold">Role:</div>
+          <div>{capitalize(user?.role || '')}</div>
+
+          {user?.role.toLowerCase() === 'seller' && (
+            <>
+              <div className="font-bold">GST Number:</div>
+              <div>{user?.gstNumber || 'N/A'}</div>
+
+              <div className="font-bold">Phone Number:</div>
+              <div>{user?.phone || 'N/A'}</div>
+
+              <div className="font-bold">Company Name:</div>
+              <div>{user?.companyName || 'N/A'}</div>
+            </>
+          )}
+
+          <div className="font-bold">Address:</div>
+          <div>{capitalize(user?.address || "No address added")}</div>
+        </div>
+        <div className="text-center mt-4">
           <button
             onClick={handleUpdateProfileClick}
-            className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-full"
+            className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-full mr-4"
           >
             Update Profile
           </button>
+
+          {user?.role.toLowerCase() === 'seller' && (
+            <button
+              onClick={handleGoToSellerDashboard}
+              className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-full"
+            >
+              Go to Seller Dashboard
+            </button>
+          )}
         </div>
       </div>
-      <div className="mb-6 bg-black p-6 rounded-lg shadow-lg">
-        <h2 className="text-2xl mb-4 text-white text-center">Order History</h2>
-        {orders.length === 0 ? (
-          <p className="text-white text-center">No orders found</p>
-        ) : (
-          <table className="min-w-full bg-gray-800 text-white shadow-md rounded-lg">
+      {orders.length > 0 && (
+        <div className="bg-white p-6 mt-4 rounded-lg shadow-lg">
+          <h2 className="text-2xl text-gray-900 mb-4">Order History</h2>
+          <table className="min-w-full text-lg">
             <thead>
-              <tr className="bg-gray-900">
+              <tr className="bg-gray-200 text-red-700">
                 <th className="py-2 px-4">Order Image</th>
                 <th className="py-2 px-4">Status</th>
                 <th className="py-2 px-4">Action</th>
@@ -140,27 +141,27 @@ const UserProfile = () => {
             <tbody>
               {orders.map((order) =>
                 order.cartItems.map((item, index) => (
-                  <tr key={`${order._id}-${index}`} className="hover:bg-gray-700">
-                    <td className="border px-4 py-2">
+                  <tr key={`${order._id}-${index}`} className="hover:bg-gray-100">
+                    <td className="px-4 py-2">
                       <img
                         src={item.imageUrl}
                         alt="Order"
                         className="h-16 w-16 object-cover"
                       />
                     </td>
-                    <td className="border px-4 py-2">{order.status}</td>
-                    <td className="border px-4 py-2 text-center">
+                    <td className="px-4 py-2">{order.status}</td>
+                    <td className="px-4 py-2 text-center">
                       {order.status === "Pending" && (
                         <button
-                          className="bg-red-600 hover:bg-red-700 text-white py-1 px-3 rounded-full"
                           onClick={() => handleCancelOrder(order._id)}
+                          className="bg-red-600 hover:bg-red-700 text-white py-1 px-3 rounded-full"
                         >
                           Cancel Order
                         </button>
                       )}
                       <button
-                        className="bg-red-600 hover:bg-red-700 text-white py-1 px-3 rounded-full ml-2"
                         onClick={() => handleDeleteOrder(order._id)}
+                        className="ml-2 bg-red-600 hover:bg-red-700 text-white py-1 px-3 rounded-full"
                       >
                         Delete Order
                       </button>
@@ -170,33 +171,8 @@ const UserProfile = () => {
               )}
             </tbody>
           </table>
-        )}
-      </div>
-      <div className="mb-6 bg-black p-6 rounded-lg shadow-lg">
-        <h2 className="text-2xl mb-4 text-white text-center">Transaction History</h2>
-        {transactions.length === 0 ? (
-          <p className="text-white text-center">No transactions found</p>
-        ) : (
-          <table className="min-w-full bg-gray-800 text-white shadow-md rounded-lg">
-            <thead>
-              <tr className="bg-gray-900">
-                <th className="py-2 px-4">Transaction ID</th>
-                <th className="py-2 px-4">Amount</th>
-                <th className="py-2 px-4">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {transactions.map((transaction) => (
-                <tr key={transaction._id} className="hover:bg-gray-700">
-                  <td className="border px-4 py-2">{transaction._id}</td>
-                  <td className="border px-4 py-2">{transaction.amount}</td>
-                  <td className="border px-4 py-2">{transaction.status}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

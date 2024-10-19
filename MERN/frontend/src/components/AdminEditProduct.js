@@ -8,7 +8,7 @@ import { MdDelete } from 'react-icons/md';
 import SummaryApi from '../common/SummaryApi';
 import { toast } from 'react-toastify';
 
-const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
+const AdminEditProduct = ({ onClose, productData }) => {
   const [data, setData] = useState({
     ...productData,
     productName: productData?.productName,
@@ -24,9 +24,8 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
-
-    setData((preve) => ({
-      ...preve,
+    setData((prev) => ({
+      ...prev,
       [name]: value,
     }));
   };
@@ -34,33 +33,54 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
   const handleUploadProduct = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    
     const uploadImageCloudinary = await uploadImage(file);
-
-    setData((preve) => ({
-      ...preve,
-      productImage: [...preve.productImage, uploadImageCloudinary.url],
+    setData((prev) => ({
+      ...prev,
+      productImage: [...prev.productImage, uploadImageCloudinary.url],
     }));
   };
 
   const handleDeleteProductImage = (index) => {
     const newProductImage = [...data.productImage];
     newProductImage.splice(index, 1);
-
-    setData((preve) => ({
-      ...preve,
+    setData((prev) => ({
+      ...prev,
       productImage: newProductImage,
     }));
   };
 
+  const fetchProducts = async () => {
+    const token = localStorage.getItem('token'); // Make sure the token is being retrieved correctly
+    if (!token) {
+      toast.error("You're not authorized. Please login.");
+      return;
+    }
+    
+    const response = await fetch(SummaryApi.getSellerProducts.url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` // Ensure this is the correct way to send your token
+      },
+    });
+
+    const responseData = await response.json();
+
+    if (responseData.success) {
+      toast.success('Products fetched successfully!');
+      onClose();
+    } else {
+      toast.error('Failed to fetch products: ' + responseData.message);
+    }
+};
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const response = await fetch(SummaryApi.updateProduct.url, {
       method: SummaryApi.updateProduct.method,
       credentials: 'include',
       headers: {
-        'content-type': 'application/json',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
     });
@@ -68,11 +88,10 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
     const responseData = await response.json();
 
     if (responseData.success) {
-      toast.success(responseData?.message);
-      onClose();
-      fetchdata();
+      toast.success(responseData.message);
+      fetchProducts();  // Call fetchProducts instead of fetchdata
     } else {
-      toast.error(responseData?.message);
+      toast.error(responseData.message);
     }
   };
 

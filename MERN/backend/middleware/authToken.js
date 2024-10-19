@@ -1,5 +1,3 @@
-// authToken.js
-
 const jwt = require('jsonwebtoken');
 const userModel = require('../models/userModel');
 
@@ -41,8 +39,8 @@ async function authToken(req, res, next) {
                 });
             }
 
-            req.userId = user._id;
-            req.userRole = user.role; // Add this line
+            req.userId = user._id;  // Store user ID in request for further use
+            req.userRole = user.role;  // Optional: Store user role for further access control
             next();
         });
     } catch (err) {

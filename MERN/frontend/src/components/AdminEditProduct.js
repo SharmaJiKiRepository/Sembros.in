@@ -50,9 +50,10 @@ const AdminEditProduct = ({ onClose, productData }) => {
   };
 
   const fetchProducts = async () => {
-    const token = localStorage.getItem('token'); // Make sure the token is being retrieved correctly
+    const token = localStorage.getItem('token'); 
     if (!token) {
-      toast.error("You're not authorized. Please login.");
+      // Remove this error toast so no message appears
+      // toast.error("You're not authorized. Please login.");
       return;
     }
     
@@ -60,7 +61,7 @@ const AdminEditProduct = ({ onClose, productData }) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}` // Ensure this is the correct way to send your token
+        'Authorization': `Bearer ${token}` 
       },
     });
 
@@ -72,7 +73,7 @@ const AdminEditProduct = ({ onClose, productData }) => {
     } else {
       toast.error('Failed to fetch products: ' + responseData.message);
     }
-};
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -89,7 +90,7 @@ const AdminEditProduct = ({ onClose, productData }) => {
 
     if (responseData.success) {
       toast.success(responseData.message);
-      fetchProducts();  // Call fetchProducts instead of fetchdata
+      fetchProducts();  
     } else {
       toast.error(responseData.message);
     }

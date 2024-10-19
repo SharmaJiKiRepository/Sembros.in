@@ -15,12 +15,8 @@ async function userSignInController(req, res) {
             throw new Error("User not found");
         }
 
-        console.log("User found:", user.email);
-        console.log("User isBlocked status:", user.isBlocked);
-
         // Check if the user is blocked
         if (user.isBlocked) {
-            console.log("User is blocked. Cannot log in.");
             return res.status(403).json({
                 message: "Your account has been blocked",
                 error: true,
@@ -29,7 +25,6 @@ async function userSignInController(req, res) {
         }
 
         const checkPassword = await bcrypt.compare(password, user.password);
-        console.log("Password match:", checkPassword);
         if (!checkPassword) {
             throw new Error("Invalid password");
         }
@@ -40,9 +35,10 @@ async function userSignInController(req, res) {
         };
         const token = jwt.sign(tokenData, process.env.TOKEN_SECRET_KEY, { expiresIn: '8h' });
 
+        // Send token in a cookie
         res.cookie("token", token, { httpOnly: true, secure: true, sameSite : 'None' }).status(200).json({
             message: "Login successfully",
-            data: token,
+            data: token,  // Send token in response for immediate client-side use
             success: true,
             error: false
         });

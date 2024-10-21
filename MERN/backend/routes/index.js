@@ -45,9 +45,9 @@ router.post("/admin/upload-product", authToken, UploadProductController);
 router.put("/admin/update-product", authToken, updateProductController);
 router.delete("/admin/delete-product/:id", authToken, deleteProductController);
 
-// Product routes
+// Protected Product Routes
 router.post("/upload-product", authToken, UploadProductController);
-router.get("/get-product", getProductController);
+router.get("/get-product", authToken, getProductController); // Protected with authToken
 router.post("/update-product", authToken, updateProductController);
 router.get("/get-categoryProduct", getCategoryProduct);
 router.post("/category-product", getCategoryWiseProduct);

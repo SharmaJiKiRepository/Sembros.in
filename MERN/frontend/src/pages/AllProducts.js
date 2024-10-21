@@ -1,19 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import UploadProduct from '../components/UploadProduct';
 import SummaryApi from '../common/SummaryApi';
-import AdminProductCard from '../components/AdminProductCard'; // Uncomment this import
+import AdminProductCard from '../components/AdminProductCard';
 
 const AllProducts = () => {
   const [openUploadProduct, setOpenUploadProduct] = useState(false);
-  const [allProduct, setAllProduct] = useState([]); // Uncomment the state
+  const [allProduct, setAllProduct] = useState([]);
 
   const fetchAllProduct = async () => {
-    const response = await fetch(SummaryApi.allProduct.url);
-    const dataResponse = await response.json();
+    try {
+      const response = await fetch(SummaryApi.allProduct.url, {
+        method: SummaryApi.allProduct.method || 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const dataResponse = await response.json();
 
-    console.log("product data", dataResponse);
+      console.log("product data", dataResponse);
 
-    setAllProduct(dataResponse?.data || []); // Uncomment and update the state
+      if (dataResponse.success) {
+        setAllProduct(dataResponse.products || []);
+      } else {
+        console.error("Failed to fetch products:", dataResponse.message);
+      }
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
   };
 
   useEffect(() => {
@@ -23,9 +37,9 @@ const AllProducts = () => {
   return (
     <div>
       <div className='bg-white py-2 px-4 flex justify-between items-center'>
-        <h2 className='font-bold text-lg'>All Product</h2>
+        <h2 className='font-bold text-lg'>All Products</h2>
         <button 
-          className='border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white transition-all py-1 px-3 rounded-full' 
+          className='border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white transition-all py-1 px-3 rounded-full hover:scale-110' 
           onClick={() => setOpenUploadProduct(true)}
         >
           Upload Product
@@ -35,15 +49,13 @@ const AllProducts = () => {
       {/* All products list */}
       <div className='flex items-center flex-wrap gap-5 py-4 h-[calc(100vh-190px)] overflow-y-scroll'>
         {
-          allProduct.map((product) => {
-            return (
-              <AdminProductCard 
-                data={product} 
-                key={product._id} // Use product._id as the unique key
-                fetchdata={fetchAllProduct}
-              />
-            );
-          })
+          allProduct.map((product) => (
+            <AdminProductCard 
+              product={product} 
+              key={product._id} 
+              onProductChange={fetchAllProduct}
+            />
+          ))
         }
       </div>
 

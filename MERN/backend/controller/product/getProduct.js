@@ -2,18 +2,30 @@ const productModel = require("../../models/productModel");
 
 const getProductController = async (req, res) => {
     try {
-        const sellerId = req.userId;  // Ensure this is being correctly set by your authentication middleware
+        const userRole = req.userRole;
 
-        // Fetch only products that belong to the logged-in seller
-        const allProduct = await productModel.find({ seller: sellerId }).sort({ createdAt: -1 });
+        let allProduct;
 
-        res.json({
-            message: "All Products for Seller",
-            success: true,
-            error: false,
-            products: allProduct
-        });
-
+        if (userRole.toUpperCase() === 'ADMIN') {
+            // Fetch all products for admin
+            allProduct = await productModel.find().sort({ createdAt: -1 });
+            res.json({
+                message: "All Products for Admin",
+                success: true,
+                error: false,
+                products: allProduct
+            });
+        } else {
+            const sellerId = req.userId;
+            // Fetch only products that belong to the logged-in seller
+            allProduct = await productModel.find({ seller: sellerId }).sort({ createdAt: -1 });
+            res.json({
+                message: "All Products for Seller",
+                success: true,
+                error: false,
+                products: allProduct
+            });
+        }
     } catch (err) {
         res.status(400).json({
             message: err.message || err,

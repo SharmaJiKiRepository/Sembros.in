@@ -8,16 +8,16 @@ import { MdDelete } from 'react-icons/md';
 import SummaryApi from '../common/SummaryApi';
 import { toast } from 'react-toastify';
 
-const AdminEditProduct = ({ onClose, productData }) => {
+const AdminEditProduct = ({ onClose, productData, onProductChange }) => {
   const [data, setData] = useState({
     ...productData,
-    productName: productData?.productName,
-    brandName: productData?.brandName,
-    category: productData?.category,
+    productName: productData?.productName || "",
+    brandName: productData?.brandName || "",
+    category: productData?.category || "",
     productImage: productData?.productImage || [],
-    description: productData?.description,
-    price: productData?.price,
-    sellingPrice: productData?.sellingPrice,
+    description: productData?.description || "",
+    price: productData?.price || 0,
+    sellingPrice: productData?.sellingPrice || 0,
   });
   const [openFullScreenImage, setOpenFullScreenImage] = useState(false);
   const [fullScreenImage, setFullScreenImage] = useState('');
@@ -33,11 +33,16 @@ const AdminEditProduct = ({ onClose, productData }) => {
   const handleUploadProduct = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    const uploadImageCloudinary = await uploadImage(file);
-    setData((prev) => ({
-      ...prev,
-      productImage: [...prev.productImage, uploadImageCloudinary.url],
-    }));
+    try {
+      const uploadImageCloudinary = await uploadImage(file);
+      setData((prev) => ({
+        ...prev,
+        productImage: [...prev.productImage, uploadImageCloudinary.url],
+      }));
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      toast.error("Failed to upload image.");
+    }
   };
 
   const handleDeleteProductImage = (index) => {
@@ -49,48 +54,30 @@ const AdminEditProduct = ({ onClose, productData }) => {
     }));
   };
 
-  const fetchProducts = async () => {
-    const token = localStorage.getItem('token'); 
-    if (!token) {
-      return;
-    }
-    
-    const response = await fetch(SummaryApi.getSellerProducts.url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}` 
-      },
-    });
-
-    const responseData = await response.json();
-
-    if (responseData.success) {
-      toast.success('Products fetched successfully!');
-      onClose();
-    } else {
-      toast.error('Failed to fetch products: ' + responseData.message);
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch(SummaryApi.updateProduct.url, {
-      method: SummaryApi.updateProduct.method,
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
+    try {
+      const response = await fetch(SummaryApi.updateProduct.url, {
+        method: SummaryApi.updateProduct.method || 'PUT',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
 
-    const responseData = await response.json();
+      const responseData = await response.json();
 
-    if (responseData.success) {
-      toast.success(responseData.message);
-      fetchProducts();  
-    } else {
-      toast.error(responseData.message);
+      if (responseData.success) {
+        toast.success(responseData.message);
+        onClose();
+        onProductChange();  
+      } else {
+        toast.error(responseData.message);
+      }
+    } catch (error) {
+      console.error("Error updating product:", error);
+      toast.error("An error occurred while updating the product.");
     }
   };
 

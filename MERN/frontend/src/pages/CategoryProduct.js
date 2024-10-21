@@ -3,11 +3,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import productCategory from '../helpers/productCategory';
 import VerticalCard from '../components/VerticalCard';
 import SummaryApi from '../common/SummaryApi';
+import Slider from "react-slick"; // Importing the Slider component from react-slick
+import "slick-carousel/slick/slick.css"; // Import slick carousel styles
+import "slick-carousel/slick/slick-theme.css"; // Import slick theme styles
 
 const CategoryProduct = () => {
     const [data, setData] = useState([]);
     const navigate = useNavigate();
-    // const [loading, setLoading] = useState(false); // Removed as it's not used
     const location = useLocation();
     const urlSearch = new URLSearchParams(location.search);
     const urlCategoryListinArray = urlSearch.getAll("category");
@@ -19,25 +21,18 @@ const CategoryProduct = () => {
 
     const [selectCategory, setSelectCategory] = useState(urlCategoryListObject);
     const [filterCategoryList, setFilterCategoryList] = useState([]);
-
     const [sortBy, setSortBy] = useState("");
 
     useEffect(() => {
       const fetchData = async () => {
-        // setLoading(true); // Uncomment if loading is used
         const response = await fetch(SummaryApi.filterProduct.url, {
           method: SummaryApi.filterProduct.method,
-          headers: {
-            "content-type": "application/json"
-          },
-          body: JSON.stringify({
-            category: filterCategoryList
-          })
+          headers: {"content-type": "application/json"},
+          body: JSON.stringify({category: filterCategoryList})
         });
 
         const dataResponse = await response.json();
         setData(dataResponse?.data || []);
-        // setLoading(false); // Uncomment if loading is used
       };
 
       fetchData();
@@ -45,25 +40,69 @@ const CategoryProduct = () => {
 
     useEffect(() => {
       const arrayOfCategory = Object.keys(selectCategory).filter(categoryKeyName => selectCategory[categoryKeyName]);
-
       setFilterCategoryList(arrayOfCategory);
-
       const urlFormat = arrayOfCategory.map(el => `category=${el}`).join("&");
       navigate("/product-category?" + urlFormat);
     }, [selectCategory, navigate]);
 
     const handleOnChangeSortBy = (e) => {
       const { value } = e.target;
-
       setSortBy(value);
+      if (value === 'asc') setData(prev => [...prev].sort((a, b) => a.sellingPrice - b.sellingPrice));
+      if (value === 'dsc') setData(prev => [...prev].sort((a, b) => b.sellingPrice - a.sellingPrice));
+    };
 
-      if (value === 'asc') {
-        setData(prev => [...prev].sort((a, b) => a.sellingPrice - b.sellingPrice));
-      }
+    // Slider settings
+    const settings = {
+      dots: true,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 3,
+      slidesToScroll: 3,
+      nextArrow: <SampleNextArrow />,
+      prevArrow: <SamplePrevArrow />
+    };
 
-      if (value === 'dsc') {
-        setData(prev => [...prev].sort((a, b) => b.sellingPrice - a.sellingPrice));
-      }
+    // Next arrow
+    const SampleNextArrow = (props) => {
+      const { className, style, onClick } = props;
+      return (
+        <div
+          className={className}
+          style={{ 
+            ...style, 
+            display: "block", 
+            background: "black", 
+            right: "-25px", // Adjust the arrow position to the right
+            zIndex: "1",    // Ensure the arrow is on top
+            width: "30px",  // Adjust the arrow size
+            height: "30px",
+            borderRadius: "50%" // Make it circular
+          }}
+          onClick={onClick}
+        />
+      );
+    };
+
+    // Previous arrow
+    const SamplePrevArrow = (props) => {
+      const { className, style, onClick } = props;
+      return (
+        <div
+          className={className}
+          style={{ 
+            ...style, 
+            display: "block", 
+            background: "black", 
+            left: "-25px",  // Adjust the arrow position to the left
+            zIndex: "1",    // Ensure the arrow is on top
+            width: "30px",  // Adjust the arrow size
+            height: "30px",
+            borderRadius: "50%" // Make it circular
+          }}
+          onClick={onClick}
+        />
+      );
     };
 
     return (
@@ -86,7 +125,7 @@ const CategoryProduct = () => {
             <div>
               <h3 className='text-base uppercase font-medium text-slate-500 border-b pb-1 border-slate-300'>Category</h3>
               <form className='text-sm flex flex-col gap-2 py-2'>
-                {productCategory.map((categoryItem, index) => (
+                {productCategory.map((categoryItem) => (
                   <div className='flex items-center gap-3' key={categoryItem.value}>
                     <input type='checkbox' name="category" checked={selectCategory[categoryItem.value]} value={categoryItem.value} id={categoryItem.value} onChange={(e) => {
                       setSelectCategory(prev => ({
@@ -102,9 +141,11 @@ const CategoryProduct = () => {
           </div>
           <div className='px-4'>
             <p className='font-medium text-slate-800 text-lg my-2'>Search Results : {data.length}</p>
-            <div className='min-h-[calc(100vh-120px)] overflow-y-scroll max-h-[calc(100vh-120px)]'>
-              {data.length !== 0 && <VerticalCard data={data} />}
-            </div>
+            <Slider {...settings}>
+              {data.map((item) => (
+                <VerticalCard key={item._id} data={item} />
+              ))}
+            </Slider>
           </div>
         </div>
       </div>

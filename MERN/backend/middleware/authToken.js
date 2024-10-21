@@ -3,7 +3,8 @@ const userModel = require('../models/userModel');
 
 async function authToken(req, res, next) {
     try {
-        const token = req.cookies?.token;
+        // Extract token from cookies
+        const token = req.cookies.token;
 
         if (!token) {
             return res.status(401).json({
@@ -13,7 +14,7 @@ async function authToken(req, res, next) {
             });
         }
 
-        jwt.verify(token, process.env.TOKEN_SECRET_KEY, async function(err, decoded) {
+        jwt.verify(token, process.env.TOKEN_SECRET_KEY, async function (err, decoded) {
             if (err) {
                 return res.status(403).json({
                     message: "Token is invalid or expired",
@@ -39,8 +40,9 @@ async function authToken(req, res, next) {
                 });
             }
 
-            req.userId = user._id;  // Store user ID in request for further use
-            req.userRole = user.role;  // Optional: Store user role for further access control
+            req.userId = user._id;       // Store user ID
+            req.userRole = user.role;    // Store user role (ADMIN/SELLER)
+
             next();
         });
     } catch (err) {

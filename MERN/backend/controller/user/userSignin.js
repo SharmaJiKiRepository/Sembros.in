@@ -35,16 +35,21 @@ async function userSignInController(req, res) {
         };
         const token = jwt.sign(tokenData, process.env.TOKEN_SECRET_KEY, { expiresIn: '8h' });
 
+        // Set cookie options
+        const cookieOptions = {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production', // Use true in production
+            sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+        };
+
         // Send token in a cookie
-        res.cookie("token", token, { httpOnly: true, secure: true, sameSite : 'None' }).status(200).json({
+        res.cookie("token", token, cookieOptions).status(200).json({
             message: "Login successfully",
-            data: token,  // Send token in response for immediate client-side use
             success: true,
             error: false
         });
 
     } catch (err) {
-        console.error("Error during sign-in:", err.message);
         res.status(400).json({
             message: err.message || "An error occurred",
             error: true,

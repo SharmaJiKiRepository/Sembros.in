@@ -48,9 +48,9 @@ const AdminPanel = () => {
     };
 
     return (
-        <div className='min-h-[calc(100vh-120px)] md:flex'>
-            <aside className='bg-white min-h-full w-full max-w-60 customShadow admin-sidebar'>
-                <div className='h-32 flex justify-center items-center flex-col'>
+        <div className="min-h-[calc(100vh-120px)] flex flex-col md:flex-row">
+            <aside className="bg-white w-full md:w-64 customShadow admin-sidebar">
+                <div className="flex flex-col items-center p-4">
                     <input
                         type="file"
                         id="profilePicInput"
@@ -59,33 +59,29 @@ const AdminPanel = () => {
                         onChange={handleProfilePicChange}
                     />
                     <div
-                        className='cursor-pointer relative flex justify-center'
+                        className="cursor-pointer relative flex justify-center mb-4"
                         onClick={handleProfilePicClick}
                         style={{ width: '120px', height: '120px', overflow: 'hidden', borderRadius: '50%' }}
                     >
                         {user?.profilePic ? (
-                            <img src={`http://localhost:8080/${user?.profilePic}`} className='w-full h-full object-cover' alt={user?.name} />
+                            <img src={`http://localhost:8080/${user?.profilePic}`} className="w-full h-full object-cover" alt={user?.name} />
                         ) : (
-                            <FaRegCircleUser className='w-full h-full text-5xl' />
+                            <FaRegCircleUser className="w-full h-full text-5xl" />
                         )}
                     </div>
-                    <p className='capitalize text-lg font-semibold mt-2'>{user?.name}</p>
-                    <p className='text-sm'>{user?.role}</p>
+                    <p className="capitalize text-lg font-semibold text-center">{user?.name}</p>
+                    <p className="text-sm text-center">{user?.role}</p>
                 </div>
-
-                <div>
-                    <nav className='grid p-4'>
-                        <Link to={"all-users"} className='px-2 py-1 hover:bg-slate-100'>All Users</Link>
-                        <Link to={"all-products"} className='px-2 py-1 hover:bg-slate-100'>All Products</Link>
-                    </nav>
-                </div>
+                <nav className="p-4">
+                    <Link to="all-users" className="block px-2 py-1 hover:bg-gray-100 rounded">All Users</Link>
+                    <Link to="all-products" className="block px-2 py-1 hover:bg-gray-100 rounded">All Products</Link>
+                </nav>
             </aside>
-
-            <main className='w-full h-full p-2 bg-gray-100'>
+            <main className="w-full h-full p-2 bg-gray-100">
                 <Outlet />
             </main>
         </div>
     );
-}
+};
 
 export default AdminPanel;

@@ -1,28 +1,216 @@
+.customShadow{
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+
+/***user table***/
+.userTable{
+    @apply bg-white
+}
+.userTable th{
+    @apply border text-base font-medium
+}
+
+.userTable td{
+    @apply border text-base text-center
+}
+
+/**scrollbar hidden****/
+.scrollbar-none::-webkit-scrollbar{
+    display: none;
+}
+.admin-sidebar {
+    background-color: #f5f5f5;
+    border-right: 1px solid #e5e5e5;
+    padding: 1rem;
+  }
+  
+  .admin-sidebar img {
+    border-radius: 50%;
+  }
+  
+  .admin-sidebar p {
+    color: #333;
+  }
+  
+  nav a {
+    padding: 0.5rem 1rem;
+    margin: 0.5rem 0;
+    display: block;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+  
+  nav a:hover {
+    background-color: #e5e5e59f;
+  }
+  /* Base styles */
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif; /* Modern, readable font */
+}
+.container {
+  padding: 1rem; /* Responsive padding */
+}
+.customShadow {
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+/* User table */
+.userTable {
+  width: 100%; /* Ensures table is full-width */
+  border-collapse: collapse; /* Cleaner table borders */
+}
+.userTable, .userTable th, .userTable td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+/* Admin sidebar styles */
+.admin-sidebar {
+  background-color: #f5f5f5;
+  border-right: 1px solid #e5e5e5;
+  padding: 1rem;
+}
+.admin-sidebar img {
+  border-radius: 50%;
+}
+.admin-sidebar p {
+  color: #333;
+}
+nav a {
+  padding: 0.5rem 1rem;
+  margin: 0.5rem 0;
+  display: block;
+  color: #333;
+  text-decoration: none;
+  border-radius: 5px;
+}
+nav a:hover {
+  background-color: #e5e5e59f;
+}
+/* Responsive styles */
+@media only screen and (max-width: 768px) {
+  .container {
+    padding: 0.5rem;
+  }
+  .admin-sidebar, nav a {
+    padding: 0.2rem 0.5rem;
+  }
+  .userTable, .userTable th, .userTable td {
+    font-size: 0.8rem; /* Smaller font size for smaller screens */
+  }
+}
+@media only screen and (min-width: 769px) {
+  .admin-sidebar {
+    width: 200px; /* Fixed sidebar width for larger screens */
+  }
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+}
+.container {
+  padding: 1rem;
+}
+.customShadow {
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.userTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+.userTable, .userTable th, .userTable td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+.admin-sidebar {
+  background-color: #f5f5f5;
+  border-right: 1px solid #e5e5e5;
+  padding: 1rem;
+}
+.admin-sidebar img {
+  border-radius: 50%;
+}
+.admin-sidebar p {
+  color: #333;
+}
+nav a {
+  padding: 0.5rem 1rem;
+  margin: 0.5rem 0;
+  display: block;
+  color: #333;
+  text-decoration: none;
+  border-radius: 5px;
+}
+nav a:hover {
+  background-color: #e5e5e59f;
+}
+@media only screen and (max-width: 768px) {
+  .container {
+    padding: 0.5rem;
+  }
+  .admin-sidebar, nav a {
+    padding: 0.2rem 0.5rem;
+  }
+  .userTable, .userTable th, .userTable td {
+    font-size: 0.8rem;
+  }
+  .profile-card, .order-history {
+    font-size: 0.8rem;
+    width: auto; /* Adjust width to auto for mobile screens */
+    padding: 10px;
+    margin: 5px 0; /* Reduced margin */
+  }
+  .profile-card button, .order-history .action-button {
+    width: 100%;
+    padding: 8px;
+  }
+}
+@media only screen and (min-width: 769px) {
+  .admin-sidebar {
+    width: 200px; /* Adjust the sidebar width on larger screens */
+  }
+  .userTable th, .userTable td {
+    padding: 0.8rem;
+  }
+}
+/* Base styles */
+* {
+  box-sizing: border-box;
+}
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif; /* Consistent font */
+}
+
+/* Container and general styling for consistent padding and box shadows */
+.container {
+  padding: 1rem;
+}
 .customShadow {
   box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
 }
 
-/* User table styling */
-.userTable {
-  background-color: white;
-}
-.userTable th {
-  border: 1px solid black;
-  font-size: 1rem;
-  font-weight: medium;
-}
-.userTable td {
-  border: 1px solid black;
-  font-size: 1rem;
-  text-align: center;
-}
-
-/* Scrollbar hidden */
+/* Scrollbar style */
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
 
-/* Admin sidebar styling */
+/* Admin sidebar and navigation links styling */
 .admin-sidebar {
   background-color: #f5f5f5;
   border-right: 1px solid #e5e5e5;
@@ -46,235 +234,115 @@ nav a:hover {
   background-color: #e5e5e59f;
 }
 
-/* Responsiveness for mobile and higher specific screens */
+/* User table and admin sidebar responsiveness */
+.userTable, .userTable th, .userTable td {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+/* Responsive adjustments */
 @media only screen and (max-width: 768px) {
-  .admin-sidebar {
-      padding: 0.5rem;
-      min-width: 60px;
+  .container, .admin-sidebar, .userTable, .userTable th, .userTable td {
+    padding: 0.5rem; /* Reduced padding */
+    font-size: 0.8rem; /* Smaller font size */
   }
   nav a {
-      padding: 0.5rem;
-      font-size: 0.8rem;
+    padding: 0.2rem 0.5rem; /* Smaller padding for nav links */
   }
-  .userTable, .userTable th, .userTable td {
-      font-size: 0.8rem;
-  }
-  .profile-card, .order-history {
-      padding: 10px;
-  }
-  .profile-card .user-details label, .profile-card .user-details span,
-  .order-history th, .order-history td {
-      font-size: 0.8rem;
-  }
-  .profile-card button, .order-history .action-button {
-      width: 100%;
-      padding: 10px;
-      font-size: 0.8rem;
-  }
-  .profile-card button {
-      margin-top: 10px;
-  }
-  .order-history .action-cell {
-      padding: 0; /* Removes padding to fit buttons */
-  }
-  .profile-card {
-      width: 100%;
-      box-shadow: none;
-      border: 1px solid #ccc; /* Adds light border for definition */
-      margin: 0; /* Removes margin for edge-to-edge design */
-      padding: 20px; /* Adjusts padding */
-  }
-  .profile-card .user-details {
-      display: flex;
-      flex-direction: column; /* Stacks the label and value */
-      margin-bottom: 10px; /* Adds bottom margin */
-  }
-  .profile-card .user-details label {
-      font-weight: bold;
-      margin-bottom: 5px; /* Adds space between label and value */
+  .admin-sidebar {
+    padding: 0.5rem; /* Smaller sidebar padding */
+    min-width: 60px; /* Smaller fixed width for sidebar */
   }
 }
 
 @media only screen and (min-width: 769px) {
   .admin-sidebar {
-      padding: 1rem;
-      width: 250px; /* Adjust width as needed */
+    width: 250px; /* Wider sidebar for larger screens */
   }
-  .userTable th, .userTable td {
-      padding: 0.8rem; /* Adjust padding as needed */
-  }
+}
+/* Base styles */
+* {
+  box-sizing: border-box;
+}
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+}
+.customShadow {
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
 }
 
-/* Order History - Mobile View */
-.order-history {
-  overflow-x: auto; /* Allows horizontal scrolling */
+/* Admin sidebar styles */
+.admin-sidebar {
+  background-color: #f5f5f5;
+  border-right: 1px solid #e5e5e5;
 }
-.order-history table {
-  width: 100%;
-  border-collapse: collapse; /* Ensures borders are neat */
+.admin-sidebar img {
+  border-radius: 50%;
 }
-.order-history th, .order-history td {
-  text-align: left; /* Aligns text to the left */
-  padding: 8px; /* Adjusts padding */
-  border-bottom: 1px solid #ddd; /* Adds a subtle border */
+.admin-sidebar p {
+  color: #333;
 }
-.order-history .action-button {
-  background-color: #f44336;
-  color: white;
-  border: none;
-  padding: 10px;
-  text-align: center;
+
+/* Navigation link styles */
+nav a {
+  padding: 0.5rem 1rem;
+  margin: 0.5rem 0;
   display: block;
-  width: 100%;
-  margin-top: 10px; /* Adds space between buttons */
-}
-.order-history .action-button:hover {
-  opacity: 0.8;
-}
-
-/* Ensures action buttons don't wrap */
-.order-history .action-cell {
-  white-space: nowrap;
-}
-.container {
-  max-width: 100%; /* Limits the width to prevent overflow on small screens */
-  margin: 0 auto; /* Centers the container */
-  padding: 20px; /* Adds padding for spacing */
-}
-
-/* Profile and order cards styling */
-.bg-white {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.text-center {
-  text-align: center;
-}
-
-/* Flex styling for the profile details */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Responsive grid layout */
-  gap: 20px; /* Space between grid items */
-}
-
-.font-bold {
-  font-weight: bold;
-}
-
-/* Button styling */
-button {
-  background-color: #ef4444; /* Red background */
-  color: white; /* White text */
-  border: none;
-  padding: 10px 20px;
+  color: #333;
+  text-decoration: none;
   border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+nav a:hover {
+  background-color: rgba(229, 229, 229, 0.62);
 }
 
-button:hover {
-  background-color: #dc2626; /* Darker red on hover */
-}
-
-/* Table styling */
-table {
-  width: 100%; /* Full-width table */
-  border-collapse: collapse; /* Collapses border to avoid double borders */
-}
-
-th, td {
-  padding: 12px;
-  border: 1px solid #ddd; /* Light grey border */
-}
-
-thead {
-  background-color: #f3f4f6; /* Light grey background for header */
-}
-
-tr:hover {
-  background-color: #f9fafb; /* Very light grey for hover */
-}
-
-/* Responsive image styling */
-img {
-  width: 100%; /* Full width */
-  height: auto; /* Maintain aspect ratio */
-  max-width: 150px; /* Maximum width */
-  border-radius: 8px; /* Rounded corners */
-}
-
-/* Responsive tables for mobile views */
-@media (max-width: 768px) {
-  .grid {
-      grid-template-columns: 1fr; /* Single column on small screens */
+/* Responsive styles */
+@media only screen and (max-width: 768px) {
+  .admin-sidebar {
+      border-right: none;
+      border-bottom: 1px solid #e5e5e5;
   }
-
-  table, thead, tbody, th, td, tr {
-      display: block; /* Block display for responsive tables */
-  }
-
-  thead tr {
-      position: absolute;
-      top: -9999px;
-      left: -9999px; /* Hide table headers on small screens */
-  }
-
-  tr {
-      border: 1px solid #ddd; /* Borders for each row */
-  }
-
-  td {
-      border: none;
-      position: relative;
-      padding-left: 50%; /* Padding for text to align after image */
-      text-align: right; /* Aligns text to the right */
-  }
-
-  td:before {
-      content: attr(data-label); /* Uses data-label attribute for content */
-      position: absolute;
-      left: 20px;
-      width: 50%; /* Width of the label */
-      padding-right: 10px;
-      white-space: nowrap; /* Ensures the label is in a single line */
-      text-align: left; /* Aligns the label text to the left */
-      font-weight: bold; /* Bold font for labels */
+  nav a {
+      padding: 0.5rem;
+      text-align: center;
+      font-size: 0.9rem;
   }
 }
-/* Button Styling */
-button {
-  background-color: #d32f2f; /* Deep red for better visibility */
-  color: #ffffff; /* White text */
-  border: none; /* No border */
-  padding: 10px 15px; /* Optimal padding */
-  border-radius: 5px; /* Rounded corners */
-  cursor: pointer; /* Cursor indicates clickable */
-  transition: background-color 0.2s, transform 0.2s; /* Smooth transition for hover effects */
-  font-size: 0.875rem; /* Appropriate font size for readability */
-  text-align: center; /* Center text alignment */
-  display: inline-block; /* Allows buttons to sit inline */
-  margin: 5px; /* Space between buttons */
-  width: auto; /* Auto width based on content */
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Subtle shadow for 3D effect */
+@media only screen and (min-width: 769px) {
+  .admin-sidebar {
+      width: 250px;
+  }
+}
+.slick-prev,
+.slick-next {
+  z-index: 2; /* Ensure arrows are on top of content */
+  width: 35px; /* Adjust size */
+  height: 35px;
+  background-color: black; /* Adjust the background color */
+  border-radius: 50%; /* Circular shape */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.75;
 }
 
-button:hover {
-  background-color: #b71c1c; /* Slightly darker red on hover */
-  transform: translateY(-2px); /* Small lift effect on hover */
+.slick-prev:hover,
+.slick-next:hover {
+  opacity: 1; /* Hover effect for better visibility */
 }
 
-button:active {
-  transform: translateY(1px); /* Slight press effect on click */
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2); /* Adjust shadow on click */
+.slick-prev {
+  left: -45px; /* Adjust position further left */
 }
 
-/* Ensuring button text is not wrapped and stays centered */
-button {
-  white-space: nowrap; /* Prevents wrapping of text inside button */
-  overflow: hidden; /* Ensures text doesn't overflow */
-  text-overflow: ellipsis; /* Adds ellipsis if text is too long */
+.slick-next {
+  right: -45px; /* Adjust position further right */
 }

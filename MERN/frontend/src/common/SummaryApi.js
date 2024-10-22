@@ -1,5 +1,5 @@
-const backendDomin = process.env.REACT_APP_BACKEND_URL
-// "http://localhost:8080";
+// src/common/SummaryApi.js
+const backendDomin = "http://localhost:8080"; // Ensure this is correct
 
 const SummaryApi = {
   signUP: {
@@ -35,7 +35,7 @@ const SummaryApi = {
     method: "get",
   },
   getSellerProducts: {
-    url: `${backendDomin}/api/get-seller-products`, // Added endpoint for seller-specific products
+    url: `${backendDomin}/api/get-seller-products`,
     method: "get",
   },
   updateProduct: {
@@ -103,7 +103,11 @@ const SummaryApi = {
     method: "put",
   },
   deleteProduct: {
-    url: `${backendDomin}/api/seller/delete-product`,  // Correct endpoint for deleting products by seller
+    url: `${backendDomin}/api/seller/delete-product`,
+    method: "delete",
+  },
+  adminDeleteProduct: { // **New Admin Delete Product Endpoint**
+    url: `${backendDomin}/api/admin/delete-product`,
     method: "delete",
   },
   blockUnblockUser: {

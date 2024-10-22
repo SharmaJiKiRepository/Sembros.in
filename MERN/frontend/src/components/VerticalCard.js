@@ -15,10 +15,10 @@ const VerticalCard = ({ loading, data = [] }) => {
     };
 
     return (
-        <div className='grid grid-cols-[repeat(auto-fit,minmax(260px,300px))] justify-center md:justify-between md:gap-4 overflow-x-scroll scrollbar-none transition-all'>
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-center gap-4 overflow-x-auto scrollbar-none transition-all'>
             {
                 loading ? (
-                    new Array(13).fill(null).map((_, index) => (
+                    new Array(12).fill(null).map((_, index) => (
                         <div key={index} className='min-w-[280px] bg-white rounded shadow p-4'>
                             <div className='animate-pulse bg-slate-200 h-48'></div>
                             <div className='mt-4 animate-pulse bg-slate-200 h-6'></div>
@@ -28,7 +28,7 @@ const VerticalCard = ({ loading, data = [] }) => {
                 ) : (
                     data.map((product) => (
                         <Link key={product._id} to={`/product/${product._id}`} className='min-w-[280px] bg-white rounded shadow' onClick={scrollTop}>
-                            <img src={product.productImage[0]} alt={product.productName} className='h-48 w-full object-cover' /> {/* Removed redundant words from alt */}
+                            <img src={product.productImage[0]} alt={product.productName} className='h-48 w-full object-cover' />
                             <div className='p-4'>
                                 <h2 className='text-lg font-semibold'>{product.productName}</h2>
                                 <p className='text-gray-500'>{product.category}</p>

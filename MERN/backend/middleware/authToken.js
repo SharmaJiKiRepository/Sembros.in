@@ -1,3 +1,4 @@
+// middleware/authToken.js
 const jwt = require('jsonwebtoken');
 const userModel = require('../models/userModel');
 
@@ -40,8 +41,9 @@ async function authToken(req, res, next) {
                 });
             }
 
-            req.userId = user._id;       // Store user ID
-            req.userRole = user.role;    // Store user role (ADMIN/SELLER)
+            // Ensuring roles are properly captured and assigned
+            req.userId = user._id.toString();       // Store user ID as a string
+            req.userRole = user.role;    // Store user role (ADMIN or SELLER)
 
             next();
         });

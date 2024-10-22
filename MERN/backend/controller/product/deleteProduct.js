@@ -1,14 +1,13 @@
+// controller/product/deleteProductController.js
 const productModel = require("../../models/productModel");
 
 const deleteProductController = async (req, res) => {
     try {
         const userRole = req.userRole;
-        const userId = req.userId;
+        const userId = req.userId.toString();
         const productId = req.params.id;
 
-        // Fetch the product by ID
         const product = await productModel.findById(productId);
-
         if (!product) {
             return res.status(404).json({
                 message: "Product not found",
@@ -17,8 +16,16 @@ const deleteProductController = async (req, res) => {
             });
         }
 
-        // Check if the user is ADMIN or the seller who owns the product
-        if (userRole.toUpperCase() !== 'ADMIN' && product.seller.toString() !== userId) {
+        console.log("User ID:", userId);
+        console.log("Product Seller ID:", product.seller ? product.seller.toString() : 'No seller');
+
+        if (userRole.toUpperCase() === 'ADMIN') {
+            // Admin can delete any product
+            // proceed to delete
+        } else if (product.seller && product.seller.toString() === userId) {
+            // Seller can delete their own product
+            // proceed to delete
+        } else {
             return res.status(403).json({
                 message: "Unauthorized to delete this product",
                 error: true,
@@ -26,9 +33,7 @@ const deleteProductController = async (req, res) => {
             });
         }
 
-        // Delete the product
         await product.deleteOne();
-
         res.status(200).json({
             message: "Product deleted successfully",
             success: true,

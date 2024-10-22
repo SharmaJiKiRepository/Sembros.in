@@ -323,26 +323,15 @@ nav a:hover {
 }
 .slick-prev,
 .slick-next {
-  z-index: 2; /* Ensure arrows are on top of content */
-  width: 35px; /* Adjust size */
-  height: 35px;
-  background-color: black; /* Adjust the background color */
-  border-radius: 50%; /* Circular shape */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.75;
-}
-
-.slick-prev:hover,
-.slick-next:hover {
-  opacity: 1; /* Hover effect for better visibility */
+  z-index: 50; /* Ensure arrows are above other content but below the top elements like headers */
+  top: 50%; /* Centers vertically */
+  transform: translateY(-50%); /* Adjust alignment to be truly centered */
 }
 
 .slick-prev {
-  left: -45px; /* Adjust position further left */
+  left: 10px; /* Or adjust according to the padding of the container */
 }
 
 .slick-next {
-  right: -45px; /* Adjust position further right */
+  right: 10px;
 }

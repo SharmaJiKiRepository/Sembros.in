@@ -43,11 +43,11 @@ router.put('/admin/block-unblock-user', authToken, blockUnblockUser);
 router.get("/admin/products", authToken, getProductController);
 router.post("/admin/upload-product", authToken, UploadProductController);
 router.put("/admin/update-product", authToken, updateProductController);
-router.delete("/admin/delete-product/:id", authToken, deleteProductController);
+router.delete("/admin/delete-product/:id", authToken, deleteProductController); // Protected
 
 // Protected Product Routes
 router.post("/upload-product", authToken, UploadProductController);
-router.get("/get-product", authToken, getProductController); // Protected with authToken
+router.get("/get-product", authToken, getProductController); // Protected
 router.post("/update-product", authToken, updateProductController);
 router.get("/get-categoryProduct", getCategoryProduct);
 router.post("/category-product", getCategoryWiseProduct);

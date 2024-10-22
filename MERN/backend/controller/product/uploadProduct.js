@@ -1,11 +1,12 @@
+// controller/product/UploadProductController.js
 const productModel = require("../../models/productModel");
 
 async function UploadProductController(req, res) {
     try {
-        const sessionUserId = req.userId;
+        const sessionUserId = req.userId.toString();
         const userRole = req.userRole;
 
-        // Check user role permissions (ensure roles are uppercase)
+        // Check user role permissions
         if (!['ADMIN', 'SELLER'].includes(userRole.toUpperCase())) {
             return res.status(403).json({
                 message: "Permission denied",
@@ -22,7 +23,7 @@ async function UploadProductController(req, res) {
             description: req.body.description,
             price: req.body.price,
             sellingPrice: req.body.sellingPrice,
-            seller: sessionUserId
+            seller: sessionUserId // Ensure seller ID is correctly assigned
         };
 
         const uploadProduct = new productModel(productData);

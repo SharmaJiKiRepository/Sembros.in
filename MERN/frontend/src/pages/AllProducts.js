@@ -1,24 +1,37 @@
-import React, { useEffect, useState } from 'react';
+// src/components/AllProducts.js
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import UploadProduct from '../components/UploadProduct';
 import SummaryApi from '../common/SummaryApi';
 import AdminProductCard from '../components/AdminProductCard';
+import Context from '../context';
 
 const AllProducts = () => {
   const [openUploadProduct, setOpenUploadProduct] = useState(false);
   const [allProduct, setAllProduct] = useState([]);
+  const { userRole, isLoading } = useContext(Context);
 
-  const fetchAllProduct = async () => {
+  const fetchAllProduct = useCallback(async () => {
     try {
-      const response = await fetch(SummaryApi.allProduct.url, {
-        method: SummaryApi.allProduct.method || 'GET',
+      let apiEndpoint;
+
+      if (userRole === 'ADMIN') {
+        apiEndpoint = SummaryApi.allProduct.url;
+      } else if (userRole === 'SELLER') {
+        apiEndpoint = SummaryApi.getSellerProducts.url;
+      } else {
+        console.error("Unauthorized access");
+        return;
+      }
+
+      const response = await fetch(apiEndpoint, {
+        method: 'GET',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      const dataResponse = await response.json();
 
-      console.log("product data", dataResponse);
+      const dataResponse = await response.json();
 
       if (dataResponse.success) {
         setAllProduct(dataResponse.products || []);
@@ -28,11 +41,17 @@ const AllProducts = () => {
     } catch (error) {
       console.error("Error fetching products:", error);
     }
-  };
+  }, [userRole]);
 
   useEffect(() => {
-    fetchAllProduct();
-  }, []);
+    if (userRole) {
+      fetchAllProduct();
+    }
+  }, [userRole, fetchAllProduct]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
